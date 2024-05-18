@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1040e7a9e1d727241b712db3e519ebce, type: 3}
   m_Name: PineGroundDecorationTile
   m_EditorClassIdentifier: 
-  sprite: {fileID: 0}
+  sprite: {fileID: 1344946961, guid: 5c0c126c88cd2204ebc96cb214da7021, type: 3}
   _spawnAtLeastOneObject: 0
   objects:
   - {fileID: 4315815078764364034, guid: aa8a47202f2abbc43b566658c4691e03, type: 3}

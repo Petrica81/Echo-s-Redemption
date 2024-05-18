@@ -35,7 +35,9 @@ public class PlayerController : MonoBehaviour
         _x = Mathf.FloorToInt(transform.position.x);
         _y = Mathf.FloorToInt(transform.position.y);
 
-        if (SceneManager.GetActiveScene().buildIndex % 2 == 0) {
+        if (SceneManager.GetActiveScene().name.Contains("MainMenu")) {
+            movement.enabled = false;
+            attack.enabled = false;
             StartMenuButtons.OnPlay += () => movement.enabled = true;
             StartMenuButtons.OnPlay += () => attack.enabled = true;
         }

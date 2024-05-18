@@ -30,6 +30,10 @@ public class Grid
                 _grid[x, y] = 0;
             }
     }
+    public Vector2Int GetSize()
+    {
+        return new Vector2Int(_width, _height);
+    }
     public void UpdateGrid(Vector3 worldPosition, int value)
     {
         int x = Mathf.FloorToInt(worldPosition.x);
