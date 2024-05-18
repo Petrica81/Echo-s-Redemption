@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1040e7a9e1d727241b712db3e519ebce, type: 3}
+  m_Name: PineGroundDecorationTile
+  m_EditorClassIdentifier: 
+  sprite: {fileID: 0}
+  _spawnAtLeastOneObject: 0
+  objects:
+  - {fileID: 4315815078764364034, guid: aa8a47202f2abbc43b566658c4691e03, type: 3}
+  - {fileID: 7805749464318274016, guid: 8379e083fa1e18c4c94f597b86419c40, type: 3}
+  probabilityToSpawn: 0500000005000000
+  spawnIterations: 0300000003000000
+  minX: 0.043
+  maxX: 0.931
+  minY: 0.074
+  maxY: 0.901
+  _colliderType: 0

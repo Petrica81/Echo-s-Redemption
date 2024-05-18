@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1040e7a9e1d727241b712db3e519ebce, type: 3}
+  m_Name: PineTiles
+  m_EditorClassIdentifier: 
+  sprite: {fileID: 804511775, guid: 5c0c126c88cd2204ebc96cb214da7021, type: 3}
+  _spawnAtLeastOneObject: 1
+  objects:
+  - {fileID: 6513828202224095737, guid: fb0067849ce59c547a546ae8cf4024b1, type: 3}
+  probabilityToSpawn: 28000000
+  spawnIterations: 02000000
+  minX: 0.147
+  maxX: 0.844
+  minY: 0.154
+  maxY: 0.858
+  _colliderType: 2

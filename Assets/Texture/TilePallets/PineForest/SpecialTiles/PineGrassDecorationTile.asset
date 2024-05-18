@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1040e7a9e1d727241b712db3e519ebce, type: 3}
+  m_Name: PineGrassDecorationTile
+  m_EditorClassIdentifier: 
+  sprite: {fileID: 0}
+  _spawnAtLeastOneObject: 0
+  objects:
+  - {fileID: 4337221028323749262, guid: 3f76478adb4fced4795cbce8651dcb93, type: 3}
+  - {fileID: 666910102371438112, guid: c1c0f0645abfedb4b9c6c40ced009b04, type: 3}
+  - {fileID: 334202881725396136, guid: 720ecec1c63da054c9c35f10cd737f31, type: 3}
+  - {fileID: 4642432856836942266, guid: cafb192046980314eaee69b41ccf65f3, type: 3}
+  - {fileID: 3420963298926235314, guid: c9d24f1c618eeef499f6a2fda0ab27bd, type: 3}
+  probabilityToSpawn: 0500000005000000050000000500000005000000
+  spawnIterations: 0300000003000000030000000300000003000000
+  minX: 0.088
+  maxX: 0.908
+  minY: 0.081
+  maxY: 0.926
+  _colliderType: 0
