@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -5,6 +6,8 @@ public class TilemapGenerator : MonoBehaviour
 {
     #region Data
     private Grid grid = Grid.Instance;
+
+    public static Delegates.PlayActionCoro _onTilemapGenerated;
 
     [SerializeField]
     [Tooltip("Characters and players can move on this tilemap.")]
@@ -62,6 +65,14 @@ public class TilemapGenerator : MonoBehaviour
         SpawnEnemies();
 
         UpdateGrid();
+
+        if (_onTilemapGenerated != null)
+        {
+            foreach (var dele in _onTilemapGenerated.GetInvocationList())
+            {
+                StartCoroutine((IEnumerator)dele.DynamicInvoke());
+            }
+        }
     }
     private void GenerateMap()
     {

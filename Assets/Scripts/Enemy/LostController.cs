@@ -3,11 +3,16 @@ using System.Collections;
 
 public class LostController : BaseEnemyController
 {
-    private new  void Start()
+    private new void Awake()
+    {
+        base.Awake();
+        TilemapGenerator._onTilemapGenerated += HandleOnTilemapGenerated;
+    }
+    private new void Start()
     {
         base.Start();
+        Health = 100;
         _timeMoving = 1f;
-        PlayerMovement.OnMove += () => _gameOn = true;
     }
     private void FixedUpdate()
     {
@@ -43,5 +48,16 @@ public class LostController : BaseEnemyController
         base._x += target.x;
         base._y += target.y;
         base._enemyState = EnemyState.idle;
+    }
+
+    public IEnumerator HandleOnTilemapGenerated()
+    {
+        yield return new WaitForSeconds(Random.Range(0f,2f));
+        this._gameOn = true;
+    }
+
+    private void OnDestroy()
+    {
+        TilemapGenerator._onTilemapGenerated -= HandleOnTilemapGenerated;
     }
 }

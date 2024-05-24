@@ -15,8 +15,8 @@ public class RecognizerSwitcher : MonoBehaviour
         spellRecognizer = GetComponent<SpellRecognizer>();
         gameOnRecognizer = GetComponent<GameOnRecognizer>();
 
-        GameOnRecognizer.onSpellCast += () => StartCoroutine(SwitchGameToSpell());
-        SpellRecognizer.onFinishSpellCast += () => StartCoroutine(SwitchSpellToGame());
+        GameOnRecognizer._onSpellCast += HandleOnSpellCast;
+        SpellRecognizer._onFinishSpellCast += HandleOnFinishSpellCast;
     }
 
     IEnumerator SwitchSpellToGame()
@@ -31,5 +31,18 @@ public class RecognizerSwitcher : MonoBehaviour
         gameOnRecognizer.enabled = false;
         yield return new WaitForSeconds(0.1f);
         spellRecognizer.enabled = true;
+    }
+    private void HandleOnSpellCast()
+    {
+        StartCoroutine(SwitchGameToSpell());
+    }
+    private void HandleOnFinishSpellCast()
+    {
+        StartCoroutine(SwitchSpellToGame());
+    }
+    private void OnDestroy()
+    {
+        GameOnRecognizer._onSpellCast -= HandleOnSpellCast;
+        SpellRecognizer._onFinishSpellCast -= HandleOnFinishSpellCast;
     }
 }

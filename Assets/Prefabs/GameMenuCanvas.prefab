@@ -187,7 +187,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 215131507271080460}
         m_TargetAssemblyTypeName: CanvasMenuLogic, Assembly-CSharp
-        m_MethodName: Quit
+        m_MethodName: Exit
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -21,6 +21,8 @@ public abstract class BaseEnemyController : MonoBehaviour
     protected int _patrolRange;
     protected float _timeMoving;
     protected bool _gameOn;
+    private int _health;
+    public int Health { get { return _health; } set { _health = value; } }
 
     protected PlayerController _player;
     protected EnemyState _enemyState;
@@ -29,10 +31,13 @@ public abstract class BaseEnemyController : MonoBehaviour
     protected Vector2Int _origin;
     protected int _x;
     protected int _y;
-    
-    protected void Start()
+
+    protected void Awake()
     {
         _gameOn = false;
+    }
+    protected void Start()
+    {
         _animator = GetComponent<Animator>();
         _enemyState = EnemyState.idle;
         _player = FindObjectOfType<PlayerController>();

@@ -1,10 +1,8 @@
 using System.Collections;
-using UnityEditor;
 using UnityEngine;
-
 public class StartMenuButtons : BaseButtons
 {
-    public static event Delegates.PlayAction OnPlay;
+    public static event Delegates.PlayAction _onPlay;
 
     public void Play()
     {
@@ -15,7 +13,7 @@ public class StartMenuButtons : BaseButtons
     {
         ButtonSound();
         yield return new WaitUntil(() => audioSource.isPlaying == false);
-        OnPlay?.Invoke();
+        _onPlay?.Invoke();
         transform.parent.gameObject.SetActive(false);
     }
 

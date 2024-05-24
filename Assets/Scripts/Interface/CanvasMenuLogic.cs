@@ -1,5 +1,6 @@
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CanvasMenuLogic : MonoBehaviour
 {
@@ -16,6 +17,11 @@ public class CanvasMenuLogic : MonoBehaviour
     public static Delegates.PlayActionOneArg _onMagicWordChanged;
     private void Start()
     {
+        if (SceneManager.GetActiveScene().name.Contains("MainMenu"))
+        {
+            gameObject.SetActive(false);
+            StartMenuButtons._onPlay += HandleOnPlay;
+        }
         _gameIsPaused = false;
         _pausePanel.SetActive(false);
         _settingsPanel.SetActive(false);
@@ -56,8 +62,24 @@ public class CanvasMenuLogic : MonoBehaviour
         EditorApplication.isPlaying = false;
         Application.Quit();
     }
+    public void Exit()
+    {
+        _gameIsPaused = false;
+        Time.timeScale = 1f;
+        _pausePanel.SetActive(false);
+        _settingsPanel.SetActive(false);
+        SceneManager.LoadScene("MainMenu");
+    }
     public void OnInputFieldValueChanged(string inputText)
     {
         _onMagicWordChanged?.Invoke(inputText);
+    }
+    private void HandleOnPlay()
+    {
+        gameObject.SetActive(true);
+    }
+    private void OnDestroy()
+    {
+        StartMenuButtons._onPlay -= HandleOnPlay;
     }
 }

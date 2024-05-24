@@ -5,7 +5,7 @@ public class GameOnRecognizer : BaseRecognizer
 {
     private string magicWord = "Spell Cast";
     public string newMagicWord = null;
-    public static Delegates.PlayAction onSpellCast;
+    public static Delegates.PlayAction _onSpellCast;
     public string MagicWord
     {
         get { return magicWord; }
@@ -16,7 +16,7 @@ public class GameOnRecognizer : BaseRecognizer
             magicWord = value;
             actions.Add(magicWord, () => { 
                 Debug.Log($"Magic sequence detected: {magicWord}");
-                onSpellCast?.Invoke();
+                _onSpellCast?.Invoke();
                 this.enabled = false;
             });
             CreateKeywordRecognizer();
@@ -31,7 +31,7 @@ public class GameOnRecognizer : BaseRecognizer
 
         base.actions.Add(MagicWord, () => { 
             Debug.Log($"Magic sequence detected: {MagicWord}");
-            onSpellCast?.Invoke();
+            _onSpellCast?.Invoke();
             this.enabled = false;
         });
     }
@@ -39,20 +39,30 @@ public class GameOnRecognizer : BaseRecognizer
     private void Start()
     {
 
-        StartMenuButtons.OnPlay += () => this.gameObject.SetActive(true);
-        CanvasMenuLogic._onMagicWordChanged += (string text) =>
-        {
-            MagicWord = text;
-            PlayerPrefs.SetString("MagicWord", MagicWord);
-            Debug.Log("Magic Word = " +  MagicWord);
-        };
+        StartMenuButtons._onPlay += HandleOnPlay;
+        CanvasMenuLogic._onMagicWordChanged += HandleOnMagicWordChanged;
         string _sceneName = SceneManager.GetActiveScene().name;
         if(_sceneName.Contains("MainMenu"))
             this.gameObject.SetActive(false);
         Debug.Log(magicWord);
 
     }
+    public void HandleOnMagicWordChanged(string text)
+    {
+        MagicWord = text;
+        PlayerPrefs.SetString("MagicWord", MagicWord);
+        Debug.Log("Magic Word = " + MagicWord);
+    }
+    public void HandleOnPlay()
+    {
+        gameObject.SetActive(true);
+    }
 
+    public void OnDestroy()
+    {
+        StartMenuButtons._onPlay -= HandleOnPlay;
+        CanvasMenuLogic._onMagicWordChanged -= HandleOnMagicWordChanged;
+    }
     /*private void Update()
     {
         if (!string.IsNullOrEmpty(newMagicWord) && newMagicWord.EndsWith("."))

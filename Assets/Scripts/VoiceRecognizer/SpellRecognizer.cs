@@ -13,7 +13,7 @@ public class SpellRecognizer : MonoBehaviour
     private string lastHypothesisResult = string.Empty;
     [SerializeField]
     private TypeClassification typeClassification;
-    public static Delegates.PlayAction onFinishSpellCast;
+    public static Delegates.PlayAction _onFinishSpellCast;
 
     private void CreateDictationRecognizer()
     {
@@ -75,7 +75,7 @@ public class SpellRecognizer : MonoBehaviour
             dictationRecognizer.Dispose();
             dictationRecognizer = null;
             lastHypothesisResult = "";
-            onFinishSpellCast?.Invoke();
+            _onFinishSpellCast?.Invoke();
             StopCoroutine(CheckSilenceTimeout());
         }
     }
