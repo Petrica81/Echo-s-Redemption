@@ -13,20 +13,24 @@ public class SpellRecognizer : MonoBehaviour
     private string lastHypothesisResult = string.Empty;
     [SerializeField]
     private TypeClassification typeClassification;
+    [SerializeField]
+    private Grimoire _grimoire;
     public static Delegates.PlayAction _onFinishSpellCast;
+    public static Delegates.PlayAction _onStartSpellCast;
+    [SerializeField]
 
     private void CreateDictationRecognizer()
     {
         if (PhraseRecognitionSystem.Status == SpeechSystemStatus.Running)
             PhraseRecognitionSystem.Shutdown();
 
-        dictationRecognizer = new DictationRecognizer(ConfidenceLevel.Low,DictationTopicConstraint.Dictation);
+        dictationRecognizer = new DictationRecognizer(ConfidenceLevel.Medium,DictationTopicConstraint.Dictation);
 
         dictationRecognizer.DictationResult += (_result, _confidence) =>
         {
             Debug.Log($"Dictation result: {_result}");
             text += " " + _result;//TextHelper.FormatText(_result);
-            lastSpeechTime = Time.time;
+            lastSpeechTime = Time.unscaledTime;
         };
 
         dictationRecognizer.DictationHypothesis += (_result) =>
@@ -35,7 +39,7 @@ public class SpellRecognizer : MonoBehaviour
             if (!_result.Split(' ')[0].Equals(lastHypothesisResult.Split(' ')[0]) && text.Split(' ').Last() != lastHypothesisResult.Split(' ').Last())
                 text += " " + lastHypothesisResult;
             lastHypothesisResult = _result;
-            lastSpeechTime = Time.time;
+            lastSpeechTime = Time.unscaledTime;
         };
 
         dictationRecognizer.DictationComplete += (_completion) =>
@@ -53,7 +57,7 @@ public class SpellRecognizer : MonoBehaviour
             this.enabled = false;
         };
         dictationRecognizer.Start();
-        lastSpeechTime = Time.time;
+        lastSpeechTime = Time.unscaledTime;
         StartCoroutine(CheckSilenceTimeout());
     }
 
@@ -61,6 +65,7 @@ public class SpellRecognizer : MonoBehaviour
     {
         if (dictationRecognizer == null)
         {
+            _onStartSpellCast?.Invoke();
             text = string.Empty;
             CreateDictationRecognizer();
         }
@@ -75,31 +80,40 @@ public class SpellRecognizer : MonoBehaviour
             dictationRecognizer.Dispose();
             dictationRecognizer = null;
             lastHypothesisResult = "";
-            _onFinishSpellCast?.Invoke();
             StopCoroutine(CheckSilenceTimeout());
         }
     }
 
     private void OnDestroy()
     {
-        this.enabled = false;
+        if (dictationRecognizer != null)
+        {
+            if (dictationRecognizer.Status == SpeechSystemStatus.Running)
+                dictationRecognizer.Stop();
+            dictationRecognizer.Dispose();
+            dictationRecognizer = null;
+        }
+        StopAllCoroutines();
     }
 
     private IEnumerator CheckSilenceTimeout()
     {
         while (true)
         {
-            if (Time.time - lastSpeechTime > silenceTime && dictationRecognizer != null && dictationRecognizer.Status == SpeechSystemStatus.Running)
+            if (Time.unscaledTime - lastSpeechTime > silenceTime && dictationRecognizer != null && dictationRecognizer.Status == SpeechSystemStatus.Running)
             {
                 /*if(!text.EndsWith(lastHypothesisResult))
                     text += " " + lastHypothesisResult;*/
                 Debug.Log($"Stop Dictation Recognizer! Full text: {text}");
                 text = TextHelper.FormatText(text);
-                Debug.Log($"Spell Type:{typeClassification.GetType(text)}");
+                string spell = typeClassification.GetSpell(text);
+                Debug.Log($"Spell :{spell}");
+                _onFinishSpellCast?.Invoke();
+                if(spell != null) _grimoire.CastSpell(spell);
                 this.enabled = false;
-                break;
+                yield break;
             }
-            yield return null;
+            yield return new WaitForSecondsRealtime(0.1f);
         }
     }
     #endregion

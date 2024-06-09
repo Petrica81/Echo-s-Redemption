@@ -10,10 +10,12 @@ public enum EnemyState
 }
 public abstract class BaseEnemyController : MonoBehaviour
 {
-    protected Grid _grid = Grid.Instance;
+    protected Grid _grid;
     protected Animator _animator;
 
     protected Transform _centerPoint;
+    protected EnemyHealth _enemyHealth;
+    protected EnemyAttack _enemyAttack;
 
     protected int _detectionDistance;
     protected int _followDistance;
@@ -22,10 +24,14 @@ public abstract class BaseEnemyController : MonoBehaviour
     protected float _timeMoving;
     protected bool _gameOn;
     private int _health;
+    private int _damage;
     public int Health { get { return _health; } set { _health = value; } }
+    public int Damage { get { return _damage; } set { _damage = value; } }
 
     protected PlayerController _player;
     protected EnemyState _enemyState;
+
+    public EnemyState EnemyState { get { return _enemyState; } set { _enemyState = value; } }
 
     protected Vector2Int _target;
     protected Vector2Int _origin;
@@ -35,12 +41,15 @@ public abstract class BaseEnemyController : MonoBehaviour
     protected void Awake()
     {
         _gameOn = false;
+        _grid = Grid.Instance;
     }
     protected void Start()
     {
         _animator = GetComponent<Animator>();
         _enemyState = EnemyState.idle;
         _player = FindObjectOfType<PlayerController>();
+        _enemyHealth = GetComponent<EnemyHealth>();
+        _enemyAttack = GetComponent<EnemyAttack>();
 
         _x = Mathf.FloorToInt(transform.position.x);
         _y = Mathf.FloorToInt(transform.position.y);

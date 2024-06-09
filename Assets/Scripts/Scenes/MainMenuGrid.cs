@@ -3,12 +3,17 @@ using UnityEngine.Tilemaps;
 
 public class MainMenuGrid : MonoBehaviour
 {
-    private Grid _grid = Grid.Instance;
+    private Grid _grid;
 
     [SerializeField]
     private Tilemap _ground;
     [SerializeField]
     private Tilemap _collision;
+
+    private void Awake()
+    {
+        _grid = Grid.Instance;
+    }
     // Start is called before the first frame update
     void Start()
     {

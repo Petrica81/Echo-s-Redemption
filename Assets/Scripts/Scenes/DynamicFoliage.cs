@@ -112,4 +112,8 @@ public class DynamicFoliage : MonoBehaviour
 
         return distX < distY ? distY : distX;
     }
+    private void OnDestroy()
+    {
+        _locations = new FoliageLocation[1,1];
+    }
 }

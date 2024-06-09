@@ -58,21 +58,18 @@ public class GameOnRecognizer : BaseRecognizer
         gameObject.SetActive(true);
     }
 
-    public void OnDestroy()
+    public new void OnDestroy()
     {
+        base.OnDestroy();
         StartMenuButtons._onPlay -= HandleOnPlay;
         CanvasMenuLogic._onMagicWordChanged -= HandleOnMagicWordChanged;
     }
-    /*private void Update()
+    public Grimoire _grimoire;
+    private void Update()
     {
-        if (!string.IsNullOrEmpty(newMagicWord) && newMagicWord.EndsWith("."))
-        {
-            newMagicWord = newMagicWord.TrimEnd('.');
-            Debug.Log($"Input changed from '{MagicWord}' to '{newMagicWord}'.");
-            MagicWord = newMagicWord;
-            newMagicWord = null;
-            PlayerPrefs.SetString("MagicWord", MagicWord);
-        }
-    }*/
+        if (Input.GetKeyUp(KeyCode.F))
+            _grimoire.CastSpell("FireballLow");
+
+    }
 }
 

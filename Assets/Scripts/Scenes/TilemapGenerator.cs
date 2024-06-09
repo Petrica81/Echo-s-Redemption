@@ -1,11 +1,12 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 
 public class TilemapGenerator : MonoBehaviour
 {
     #region Data
-    private Grid grid = Grid.Instance;
+    private Grid grid;
 
     public static Delegates.PlayActionCoro _onTilemapGenerated;
 
@@ -32,6 +33,8 @@ public class TilemapGenerator : MonoBehaviour
 
     [SerializeField]
     private GameObject _enemy;
+    [SerializeField]
+    private Transform enemies;
 
     [SerializeField]
     private int mapWidth;
@@ -42,6 +45,10 @@ public class TilemapGenerator : MonoBehaviour
     private int[,] collisionMap;
     #endregion
 
+    private void Awake()
+    {
+        grid = Grid.Instance;
+    }
     void Start()
     {
         GenerateMap();
@@ -72,6 +79,14 @@ public class TilemapGenerator : MonoBehaviour
             {
                 StartCoroutine((IEnumerator)dele.DynamicInvoke());
             }
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (enemies.childCount <= 0)
+        {
+            SceneManager.LoadScene("MainMenu");
         }
     }
     private void GenerateMap()
@@ -271,7 +286,7 @@ public class TilemapGenerator : MonoBehaviour
             for (int y = 0; y < mapWidth; y++)
             {
                 if (collisionMap[x, y] == 0 && Random.Range(1, 100) > 98)
-                    Instantiate(_enemy, new Vector3(x + 0.5f, y + 0.5f, 0f), Quaternion.identity);
+                    Instantiate(_enemy, new Vector3(x + 0.5f, y + 0.5f, 0f), Quaternion.identity, enemies);
             }
     }
 }

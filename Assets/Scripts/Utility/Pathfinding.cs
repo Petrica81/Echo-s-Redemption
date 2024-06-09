@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Node
@@ -15,14 +14,20 @@ public class Node
     {
         this.x = x;
         this.y = y;
-        gCost = 1000;
+        gCost = int.MaxValue; // Initialize to a high value
     }
-    public int FCost { get { return gCost + hCost; } }
+
+    public int FCost
+    {
+        get { return gCost + hCost; }
+    }
+
     public bool IsWalkable()
     {
         return !Grid.Instance.IsCellOccupied(x, y);
     }
 }
+
 public static class Pathfinding
 {
     private static Grid _grid = Grid.Instance;
@@ -32,128 +37,168 @@ public static class Pathfinding
         Node startNode = new Node(startPosition.x, startPosition.y);
         Node targetNode = new Node(targetPosition.x, targetPosition.y);
 
-        List<Node> open = new List<Node>();
-        HashSet<Node> visited = new HashSet<Node>();
-        open.Add(startNode);
+        List<Node> openList = new List<Node>();
+        HashSet<Node> closedList = new HashSet<Node>();
+        openList.Add(startNode);
 
         startNode.gCost = 0;
         startNode.hCost = GetDistance(startNode, targetNode);
+
         int depth = 0;
 
-        while (open.Count > 0)
+        while (openList.Count > 0)
         {
-            Node currentNode = open[0];
+            Node currentNode = openList[0];
+            for (int i = 1; i < openList.Count; i++)
+            {
+                if (openList[i].FCost < currentNode.FCost ||
+                    (openList[i].FCost == currentNode.FCost && openList[i].hCost < currentNode.hCost))
+                {
+                    currentNode = openList[i];
+                }
+            }
 
-            for (int i = 1; i < open.Count; i++)
-                if (open[i].FCost < currentNode.FCost || (open[i].FCost == currentNode.FCost && open[i].hCost < currentNode.hCost))
-                    currentNode = open[i];
-
-            open.Remove(currentNode);
-            visited.Add(currentNode);
+            openList.Remove(currentNode);
+            closedList.Add(currentNode);
 
             if (depth >= maxDepth)
-                break;
-
-            if (currentNode == targetNode)
-                return true;
-
-            foreach (Node neighbor in GetCloseNeighbors(currentNode))
             {
-                if (!neighbor.IsWalkable() || visited.Contains(neighbor))
-                    continue;
+                return false; // Failed to find a path within the depth limit
+            }
 
-                int newMovementCostToNeighbor = currentNode.gCost + GetDistance(currentNode, neighbor);
-                if (newMovementCostToNeighbor < neighbor.gCost || !open.Contains(neighbor))
+            if (currentNode.x == targetNode.x && currentNode.y == targetNode.y)
+            {
+                return true; // Path found
+            }
+
+            foreach (Node neighbor in GetNeighbors(currentNode))
+            {
+                if (!neighbor.IsWalkable() || closedList.Contains(neighbor))
                 {
-                    neighbor.gCost = newMovementCostToNeighbor;
+                    continue;
+                }
+
+                int newCostToNeighbor = currentNode.gCost + GetDistance(currentNode, neighbor);
+                if (newCostToNeighbor < neighbor.gCost || !openList.Contains(neighbor))
+                {
+                    neighbor.gCost = newCostToNeighbor;
                     neighbor.hCost = GetDistance(neighbor, targetNode);
                     neighbor.parent = currentNode;
 
-                    if (!open.Contains(neighbor))
+                    if (!openList.Contains(neighbor))
                     {
-                        open.Add(neighbor);
+                        openList.Add(neighbor);
                     }
                 }
             }
+
             depth++;
         }
-        return false;
+
+        return false; // No path found
     }
+
     public static Vector2Int GetDirection(Vector2Int startPosition, Vector2Int targetPosition, int maxDepth)
     {
         List<Vector2Int> path = FindPath(startPosition, targetPosition, maxDepth);
-        return path.Count > 0 ? path[1] - startPosition: new Vector2Int(0,0);
+        return path.Count > 1 ? path[1] - startPosition : new Vector2Int(0, 0);
     }
+
     public static List<Vector2Int> FindPath(Vector2Int startPosition, Vector2Int targetPosition, int maxDepth)
     {
-        List<Vector2Int> path =  new List<Vector2Int>();
+        List<Vector2Int> path = new List<Vector2Int>();
 
-        Node startNode =  new Node(startPosition.x, startPosition.y);
+        Node startNode = new Node(startPosition.x, startPosition.y);
         Node targetNode = new Node(targetPosition.x, targetPosition.y);
 
-        List<Node> open = new List<Node>();
-        HashSet<Node> visited = new HashSet<Node>();
-        open.Add(startNode);
+        List<Node> openList = new List<Node>();
+        HashSet<Node> closedList = new HashSet<Node>();
+        openList.Add(startNode);
+
+        startNode.gCost = 0;
+        startNode.hCost = GetDistance(startNode, targetNode);
 
         int depth = 0;
 
-        while (open.Count > 0)
+        while (openList.Count > 0)
         {
-            Node currentNode = open[0];
+            Node currentNode = openList[0];
+            for (int i = 1; i < openList.Count; i++)
+            {
+                if (openList[i].FCost < currentNode.FCost ||
+                    (openList[i].FCost == currentNode.FCost && openList[i].hCost < currentNode.hCost))
+                {
+                    currentNode = openList[i];
+                }
+            }
 
-            for (int i = 1; i < open.Count; i++)
-                if (open[i].FCost < currentNode.FCost || (open[i].FCost == currentNode.FCost && open[i].hCost < currentNode.hCost))
-                    currentNode = open[i];
-               
-            open.Remove(currentNode);
-            visited.Add(currentNode);
+            openList.Remove(currentNode);
+            closedList.Add(currentNode);
 
             if (depth >= maxDepth)
-                break;
+            {
+                return path; // Return empty path if depth limit is reached
+            }
 
-            if(currentNode == targetNode)
+            if (currentNode.x == targetNode.x && currentNode.y == targetNode.y)
             {
                 path = RetracePath(startNode, targetNode);
                 break;
             }
 
-            foreach (Node neighbor in GetCloseNeighbors(currentNode))
+            foreach (Node neighbor in GetNeighbors(currentNode))
             {
-                if (!neighbor.IsWalkable() || visited.Contains(neighbor))
-                    continue;
-
-                int newMovementCostToNeighbor = currentNode.gCost + GetDistance(currentNode, neighbor);
-                if (newMovementCostToNeighbor < neighbor.gCost || !open.Contains(neighbor))
+                if (!neighbor.IsWalkable() || closedList.Contains(neighbor))
                 {
-                    neighbor.gCost = newMovementCostToNeighbor;
+                    continue;
+                }
+
+                int newCostToNeighbor = currentNode.gCost + GetDistance(currentNode, neighbor);
+                if (newCostToNeighbor < neighbor.gCost || !openList.Contains(neighbor))
+                {
+                    neighbor.gCost = newCostToNeighbor;
                     neighbor.hCost = GetDistance(neighbor, targetNode);
                     neighbor.parent = currentNode;
 
-                    if (!open.Contains(neighbor))
+                    if (!openList.Contains(neighbor))
                     {
-                        open.Add(neighbor);
+                        openList.Add(neighbor);
                     }
                 }
             }
+
             depth++;
         }
+
         return path;
     }
 
-
-    public static List<Node> GetCloseNeighbors(Node node)
+    public static List<Node> GetNeighbors(Node node)
     {
-        List<Node> nodes = new List<Node>();
-        if (_grid.IsInsideGrid(node.x - 1, node.y - 1))
-            nodes.Add(new Node(node.x - 1, node.y - 1));
-        if (_grid.IsInsideGrid(node.x + 1, node.y - 1))
-            nodes.Add(new Node(node.x + 1, node.y - 1));
-        if (_grid.IsInsideGrid(node.x - 1, node.y + 1))
-            nodes.Add(new Node(node.x - 1, node.y + 1));
-        if (_grid.IsInsideGrid(node.x + 1, node.y + 1))
-            nodes.Add(new Node(node.x + 1, node.y + 1));
-        return nodes;
+        List<Node> neighbors = new List<Node>();
+
+        for (int dx = -1; dx <= 1; dx++)
+        {
+            for (int dy = -1; dy <= 1; dy++)
+            {
+                if (dx == 0 && dy == 0)
+                {
+                    continue;
+                }
+
+                int checkX = node.x + dx;
+                int checkY = node.y + dy;
+
+                if (_grid.IsInsideGrid(checkX, checkY))
+                {
+                    neighbors.Add(new Node(checkX, checkY));
+                }
+            }
+        }
+
+        return neighbors;
     }
+
     public static List<Vector2Int> RetracePath(Node startNode, Node endNode)
     {
         List<Vector2Int> path = new List<Vector2Int>();
@@ -168,10 +213,11 @@ public static class Pathfinding
         path.Reverse();
         return path;
     }
+
     private static int GetDistance(Node nodeA, Node nodeB)
     {
         int dstX = Mathf.Abs(nodeA.x - nodeB.x);
         int dstY = Mathf.Abs(nodeA.y - nodeB.y);
-        return dstX + dstY; // Assuming movement cost between adjacent nodes is 1
+        return dstX + dstY; // Manhattan distance for grid movement
     }
 }

@@ -17,39 +17,47 @@ public class SlimeController : BaseEnemyController
         PlayerMovement.OnMove += () => Detect(_player);
         PlayerMovement.OnMove += () => _gameOn = true;
     }
+
     private void FixedUpdate()
     {
-        if(_gameOn && base._enemyState == EnemyState.idle)
+        if (_gameOn && base._enemyState == EnemyState.idle)
         {
             StartCoroutine(Move());
         }
     }
+
     private IEnumerator Move()
     {
         base._enemyState = EnemyState.moving;
         yield return new WaitForSeconds(1f);
-        Vector2Int target = Pathfinding.GetDirection(GetPosition(), _target, _followDistance);
 
-        Debug.Log(target);
-        _grid.UpdateGrid(new Vector3(_x, _y, -1), 0);
-        _grid.UpdateGrid(new Vector3(_x + target.x, _y + target.y, -1), 2);
+        Vector2Int currentPos = GetPosition();
+        Vector2Int playerPos = _player.GetPlayerPosition();
 
-        Vector2 originPos;
+        // Use A* pathfinding to get the direction towards the player
+        Vector2Int targetDirection = Pathfinding.GetDirection(currentPos, playerPos, _followDistance);
 
+        // Log the target direction
+        Debug.Log(targetDirection);
+
+        // Update grid for the slime's new position
+        _grid.UpdateGrid(new Vector3(base._x, base._y, -1), 0);
+        _grid.UpdateGrid(new Vector3(base._x + targetDirection.x, base._y + targetDirection.y, -1), 2);
+
+        Vector2 originPos = transform.position;
         float elapsedTime = 0f;
-
-        originPos = transform.position;
 
         while (elapsedTime < _timeMoving)
         {
-            transform.position = Vector2.Lerp(originPos, originPos + target, elapsedTime / _timeMoving);
+            transform.position = Vector2.Lerp(originPos, originPos + (Vector2)targetDirection, elapsedTime / _timeMoving);
             elapsedTime += Time.deltaTime;
             yield return new WaitForSeconds(_timeMoving / 100f);
         }
+
         yield return null;
-        transform.position = originPos + target;
-        base._x += target.x;
-        base._y += target.y;
-        base._enemyState = EnemyState.idle; 
+        transform.position = originPos + (Vector2)targetDirection;
+        base._x += targetDirection.x;
+        base._y += targetDirection.y;
+        base._enemyState = EnemyState.idle;
     }
 }

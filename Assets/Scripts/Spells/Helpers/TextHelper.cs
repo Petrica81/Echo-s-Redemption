@@ -52,29 +52,24 @@ public static class TextHelper
 
         foreach (string _word in _words)
         {
-            if (_word.Contains(_input))
-            {
-                _closestWord = _word;
-                break;
-            }
+            int distance = _minDistance;
             if (SpellWords.levenshteinDistances.Keys.Contains((_input, _word)))
             {
-                int _distance = SpellWords.levenshteinDistances[(_input, _word)];
-                if (_distance < _minDistance && _distance <= 1)
-                {
-                    _minDistance = _distance;
-                    _closestWord = _word;
-                }
+                distance = SpellWords.levenshteinDistances[(_input, _word)];
             }
             else
             {
-                int _distance = LevenshteinDistance(_input, _word);
-                SpellWords.levenshteinDistances.Add((_input,_word), _distance);
-                if (_distance < _minDistance && _distance <= 1)
-                {
-                    _minDistance = _distance;
-                    _closestWord = _word;
-                }
+                distance = LevenshteinDistance(_input, _word);
+                SpellWords.levenshteinDistances.Add((_input, _word), distance);
+            }
+            if (distance < _minDistance && distance <= 1)
+            {
+                _minDistance = distance;
+                _closestWord = _word;
+            }
+            else if (_word.Contains(_input) && distance <= 3)
+            {
+                _closestWord = _word;
             }
         }
         if(_closestWord != null)

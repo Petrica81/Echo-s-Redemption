@@ -6,26 +6,28 @@ public class MasteryClassification : MonoBehaviour
 {
     private Dictionary<string, List<(string, int)>> keyMasteryValue = new Dictionary<string, List<(string, int)>>
     {
-        { "god",new List<(string,int)>{("high",500)} },
-        { "godess",new List<(string,int)>{("high",500)} }
+        { "god",new List<(string,int)>{("High",500)} },
+        { "godess",new List<(string,int)>{("High",500)} }
     };
     private Dictionary<string, int> masteryValue = new Dictionary<string, int> {
-        { "high", 0 },
-        { "medium", 0 },
-        { "low", 0 }
+        { "High", 0 },
+        { "Medium", 0 },
+        { "Low", 0 }
     };
     private void MasteryClassify(string _input)
     {
         foreach (string _word in _input.Split(" "))
         {
-            string _newWord = TextHelper.FindClosestWord(_word, keyMasteryValue.Keys.ToList());
+            string _newWord = null;
+            if(_word.Count() > 1)
+                _newWord = TextHelper.FindClosestWord(_word, keyMasteryValue.Keys.ToList());
             if (_newWord != null)
             {
                 if (keyMasteryValue[_newWord] != null)
                 {
                     foreach ((string _mastery, int _value) in keyMasteryValue[_newWord])
                     {
-                        Debug.Log($"!!!!!!!! mastery = {_mastery} and value = {_value}, word = {_newWord}");
+                        Debug.Log($"Mastery = {_mastery}, Value = {_value}, Word = {_newWord}");
                         masteryValue[_mastery] += _value;
                     }
                 }
@@ -37,9 +39,11 @@ public class MasteryClassification : MonoBehaviour
     {
         ResetValues();
         MasteryClassify(_text);
-        if (_value > 20)
-            masteryValue["medium"] = _value;
-        int _maxim = 0;
+        if (_value > 40)
+            masteryValue["Medium"] = _value;
+        else
+            masteryValue["Low"] = 100 - _value;
+        int _maxim = -1;
         string _mastery = null;
         foreach (string _key in masteryValue.Keys.ToList())
         {

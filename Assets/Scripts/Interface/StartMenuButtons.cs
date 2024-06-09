@@ -1,9 +1,23 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.EventSystems;
 public class StartMenuButtons : BaseButtons
 {
     public static event Delegates.PlayAction _onPlay;
-
+    [SerializeField] private GameObject startMenuFirst;
+    [SerializeField] private GameObject settingsMenuFirst;
+    private new void Start()
+    {
+        base.Start();
+        EventSystem.current.SetSelectedGameObject(startMenuFirst);
+    }
+    private void Update()
+    {
+        if((Input.GetKeyUp(KeyCode.DownArrow) || Input.GetKeyUp(KeyCode.UpArrow)) && EventSystem.current.currentSelectedGameObject == null)
+        {
+            EventSystem.current.SetSelectedGameObject(startMenuFirst);
+        }
+    }
     public void Play()
     {
         StartCoroutine(PlayCoro());
@@ -20,6 +34,7 @@ public class StartMenuButtons : BaseButtons
     public void Settings()
     {
         ButtonSound();
+        EventSystem.current.SetSelectedGameObject(settingsMenuFirst);
     }
 
     public void Quit()

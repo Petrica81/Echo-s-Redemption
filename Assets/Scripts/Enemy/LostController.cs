@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using TMPro.EditorUtilities;
 
 public class LostController : BaseEnemyController
 {
@@ -12,6 +13,7 @@ public class LostController : BaseEnemyController
     {
         base.Start();
         Health = 100;
+        Damage = 20;
         _timeMoving = 1f;
     }
     private void FixedUpdate()
@@ -26,6 +28,13 @@ public class LostController : BaseEnemyController
         base._enemyState = EnemyState.moving;
         yield return new WaitForSeconds(1f);
         Vector2Int target = base.GetRandomDirection();
+
+        Vector2Int playerPos = base._player.GetPlayerPosition();
+        if (playerPos.x == base._x + target.x && playerPos.y == base._y + target.y)
+        {
+            StartCoroutine(_enemyAttack.Attack(base._player, target, Damage));
+            yield break;
+        }
 
         _grid.UpdateGrid(new Vector3(_x + target.x, _y + target.y, -1), 2);
 

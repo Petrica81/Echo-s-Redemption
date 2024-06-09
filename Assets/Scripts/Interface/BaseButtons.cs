@@ -8,7 +8,7 @@ public abstract class BaseButtons : MonoBehaviour
     private AudioClip clickSound;
     protected AudioSource audioSource;
 
-    private void Start()
+    protected void Start()
     {
         if(gameObject.GetComponent<AudioSource>())
             audioSource = gameObject.GetComponent<AudioSource>();

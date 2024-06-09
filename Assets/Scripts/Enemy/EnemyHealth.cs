@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
@@ -13,8 +11,10 @@ public class EnemyHealth : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("PlayerWeapon"))
         {
-            _controller.Health -= 50;
+            _controller.Health -= collision.GetComponent<Attack>().Damage;
             Debug.Log($"Remaining enemy health: {_controller.Health}");
+            if (_controller.Health <= 0)
+                Destroy(this.gameObject);
         }
     }
 }

@@ -4,7 +4,11 @@ using UnityEngine;
 public class PlayerAttack : MonoBehaviour
 {
     private PlayerController _controller;
-    private Grid _grid = Grid.Instance;
+    private Grid _grid;
+    private void Awake()
+    {
+        _grid = Grid.Instance;
+    }
     private void Start()
     {
         _controller = GetComponent<PlayerController>();

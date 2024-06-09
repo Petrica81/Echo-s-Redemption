@@ -15,7 +15,22 @@ public class PlayerController : MonoBehaviour
     public PlayerAnimator animator;
     private PlayerMovement movement;
     private PlayerAttack attack;
-    private Grid _grid = Grid.Instance;
+    private Grid _grid;
+    public static PlayerController Instance;
+
+    private int _health;
+    public int Health { get { return _health; } 
+        set {
+            Debug.Log($"Aveam {_health} viata, iar acum am {value} viata!");
+            if (value <= 0)
+            {
+                _health = 10;
+                SceneManager.LoadScene("MainMenu");
+            }
+            else 
+                _health = value;
+        } }
+
     public int _x;
     public int _y;
     private void Awake()
@@ -24,6 +39,8 @@ public class PlayerController : MonoBehaviour
         animator = GetComponent<PlayerAnimator>();
         movement = GetComponent<PlayerMovement>();
         attack = GetComponent<PlayerAttack>();
+        _grid = Grid.Instance;
+        Instance = this;
     }
 
     private void Start()
@@ -42,9 +59,13 @@ public class PlayerController : MonoBehaviour
             movement.enabled = false;
             attack.enabled = false;
             StartMenuButtons._onPlay += HandleOnPlay;
+            Health = 10;
         }
         else
+        {
             TilemapGenerator._onTilemapGenerated += HandleOnTilemapGenerated;
+            Health = 10;
+        }
     }
     public Vector2Int GetPlayerPosition()
     {
@@ -66,6 +87,7 @@ public class PlayerController : MonoBehaviour
     }
     public void OnDestroy()
     {
+        Grid.ResetInstance();
         StartMenuButtons._onPlay -= HandleOnPlay;
         TilemapGenerator._onTilemapGenerated -= HandleOnTilemapGenerated;
     }

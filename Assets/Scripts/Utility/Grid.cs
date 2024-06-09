@@ -30,6 +30,10 @@ public class Grid
                 _grid[x, y] = 0;
             }
     }
+    public static void ResetInstance()
+    {
+        _instance = null;
+    }
     public Vector2Int GetSize()
     {
         return new Vector2Int(_width, _height);
@@ -50,7 +54,7 @@ public class Grid
     }
     public bool IsCellOccupied(int x, int y)
     {
-        if (_grid[x,y] != 0)
+        if (_grid[x,y] > 0)
             return true;
         return false;
     }
@@ -82,4 +86,5 @@ public class Grid
     {
         return x >= 0 && x < _width && y >= 0 && y < _height;
     }
+    
 }

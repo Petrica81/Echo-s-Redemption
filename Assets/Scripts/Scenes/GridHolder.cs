@@ -2,10 +2,14 @@ using UnityEngine;
 
 public class GridHolder : MonoBehaviour
 {
-    private Grid _grid = Grid.Instance;
+    private Grid _grid;
     [SerializeField]
     private bool _showCircles = false;
     private PlayerController _player;
+    private void Awake()
+    {
+        _grid = Grid.Instance;
+    }
     private void Start()
     {
         _player = FindObjectOfType<PlayerController>();

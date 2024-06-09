@@ -33,6 +33,12 @@ public class PlayerAnimator : MonoBehaviour
         _footAnim.SetFloat("X", x);
         _footAnim.SetFloat("Y", y);
     }
+    public Vector2Int GetDirection()
+    {
+        int x = (int)_headAnim.GetFloat("X");
+        int y = (int)_headAnim.GetFloat("Y");
+        return new Vector2Int(x, y);
+    }
 
     public void PlayIdleAnim(string helmetName, string chestplateName, string pantsName)
     {

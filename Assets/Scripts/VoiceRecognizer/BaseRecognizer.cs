@@ -46,4 +46,14 @@ public abstract class BaseRecognizer : MonoBehaviour
             keywordRecognizer = null;
         }
     }
+    protected void OnDestroy()
+    {
+        if (keywordRecognizer != null)
+        {
+            keywordRecognizer.Stop();
+            keywordRecognizer.OnPhraseRecognized -= PhraseRecognized;
+            keywordRecognizer.Dispose();
+            keywordRecognizer = null;
+        }
+    }
 }

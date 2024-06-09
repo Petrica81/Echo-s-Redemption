@@ -3,11 +3,15 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private Grid _grid = Grid.Instance;
+    private Grid _grid;
     public static event Delegates.PlayAction OnMove;
     private PlayerController _controller;
     private float _timeMoving = 0.2f;
 
+    private void Awake()
+    {
+        _grid = Grid.Instance;
+    }
     private void Start()
     {
         _controller = GetComponent<PlayerController>();
