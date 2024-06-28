@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Fireball : Spell
+public class BallSpell : Spell
 {
     private FireballProjectile _projectile;
     // Start is called before the first frame update
@@ -19,6 +17,7 @@ public class Fireball : Spell
 
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         _projectile.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+        _projectile.transform.position += new Vector3(direction.x, direction.y, 0);
 
         _projectile.gameObject.SetActive(true);
 

@@ -1176,6 +1176,7 @@ MonoBehaviour:
   treeTile: {fileID: 11400000, guid: fc129f9e58ab50e4381be367cdabf598, type: 2}
   groundChance: 20
   _enemy: {fileID: 6650205179316825721, guid: daa7753abf92a3742baa056c12f55541, type: 3}
+  _enemy2: {fileID: 6650205179316825721, guid: 1633d23ded2fc1a4496d783a138ab4e7, type: 3}
   enemies: {fileID: 117258628}
   mapWidth: 100
   mapHeight: 100

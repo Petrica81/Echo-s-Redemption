@@ -27,7 +27,7 @@ public class LostController : BaseEnemyController
     {
         base._enemyState = EnemyState.moving;
         yield return new WaitForSeconds(1f);
-        Vector2Int target = base.GetRandomDirection();
+        Vector2Int target = base.GetRandomDirectionToPlayer();
 
         Vector2Int playerPos = base._player.GetPlayerPosition();
         if (playerPos.x == base._x + target.x && playerPos.y == base._y + target.y)

@@ -258,6 +258,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _spellList:
   - {fileID: 8877209069592396306, guid: 68e138ddb46778846b567ffd53027129, type: 3}
+  - {fileID: 8877209069592396306, guid: 739969d81c7d15c43a0b5038ebf6ab0d, type: 3}
+  - {fileID: 8877209069592396306, guid: aca7c8134b5010144877a1ae51689c06, type: 3}
 --- !u!1 &7100614580711202569
 GameObject:
   m_ObjectHideFlags: 0

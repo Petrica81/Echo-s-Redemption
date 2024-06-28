@@ -4,7 +4,8 @@ public static class SpellWords
 {
     #region Unnecessary Words
     public static List<string> unnecessaryWords = new List<string> {
-        "on","is","a","an","he","i","you","we","us","they","she","in"
+        "on","is","a","an","he","i","you","we","us","they","she","in",
+        "me","of","the","your","to","this"
     };
     #endregion
     #region Levenshtein Distances
@@ -70,7 +71,7 @@ public static class SpellWords
         { "cascade", new List<(string, int)> { ("water", 8) } },
         { "deluge", new List<(string, int)> { ("water", 7) } },
         { "splash", new List<(string, int)> { ("water", 10) } },
-        { "mist", new List<(string, int)> { ("water", 5) } },
+        { "mist", new List<(string, int)> { ("water", 5), ("wind", 3) } },
         { "droplet", new List<(string, int)> { ("water", 8) } },
         { "flood", new List<(string, int)> { ("water", 10) } },
         { "drench", new List<(string, int)> { ("water", 7) } },

@@ -34,6 +34,8 @@ public class TilemapGenerator : MonoBehaviour
     [SerializeField]
     private GameObject _enemy;
     [SerializeField]
+    private GameObject _enemy2;
+    [SerializeField]
     private Transform enemies;
 
     [SerializeField]
@@ -287,6 +289,9 @@ public class TilemapGenerator : MonoBehaviour
             {
                 if (collisionMap[x, y] == 0 && Random.Range(1, 100) > 98)
                     Instantiate(_enemy, new Vector3(x + 0.5f, y + 0.5f, 0f), Quaternion.identity, enemies);
+                else 
+                    if (collisionMap[x, y] == 0 && Random.Range(1, 100) > 98)
+                        Instantiate(_enemy2, new Vector3(x + 0.5f, y + 0.5f, 0f), Quaternion.identity, enemies);
             }
     }
 }

@@ -12,10 +12,10 @@ public class SpellClassification : MonoBehaviour
                 ["Spaceball"] = 0,
             },
         ["earth"] = new Dictionary<string, int>{
-                ["Earthball"] = 0,
+                ["Earthquake"] = 0,
             },
         ["water"] = new Dictionary<string, int>{
-                ["Waterball"] = 0,
+                ["WaterCascade"] = 0,
             },
         ["wind"] = new Dictionary<string, int>{
                 ["Windball"] = 0,

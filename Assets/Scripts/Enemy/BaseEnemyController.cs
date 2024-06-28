@@ -10,6 +10,7 @@ public enum EnemyState
 }
 public abstract class BaseEnemyController : MonoBehaviour
 {
+    protected PlayerController player;
     protected Grid _grid;
     protected Animator _animator;
 
@@ -42,6 +43,7 @@ public abstract class BaseEnemyController : MonoBehaviour
     {
         _gameOn = false;
         _grid = Grid.Instance;
+        player = PlayerController.Instance;
     }
     protected void Start()
     {
@@ -97,13 +99,30 @@ public abstract class BaseEnemyController : MonoBehaviour
     {
         return new Vector2Int(_x, _y);
     }
-    protected Vector2Int GetRandomDirection()
+    protected Vector2Int GetRandomDirectionToPlayer()
     {
-        Vector2Int target = new Vector2Int(0, 0);
-        target.x = Random.Range(-1, 2);
-        target.y = target.x == 0 ? Random.Range(-1, 2) : 0;
+        Vector2Int playerPos = new Vector2Int(player._x, player._y);
+        Vector2Int currentPos = new Vector2Int(_x, _y);
 
-        while(Grid.Instance.IsCellOccupied(_x + target.x, _y + target.y))
+        Vector2Int direction = playerPos - currentPos; 
+
+
+
+        Vector2Int target = new Vector2Int(0, 0);
+
+        if(direction.x >= Random.Range(-20,1) && direction.x <= Random.Range(1,20) && direction.x != 0)
+            target.x = direction.x / Mathf.Abs(direction.x);
+        else
+            target.x = Random.Range(-1, 2);
+
+        if (target.x == 0) {
+            if (direction.y >= Random.Range(-20, 1) && direction.y <= Random.Range(1, 20) && direction.y != 0)
+                target.y = direction.y / Mathf.Abs(direction.y);
+            else
+                target.y = Random.Range(-1, 2);
+        }
+
+        while (Grid.Instance.IsCellOccupied(_x + target.x, _y + target.y))
         {
             target.y = Random.Range(-1, 2);
             target.x = target.y == 0 ? Random.Range(-1, 2) : 0;

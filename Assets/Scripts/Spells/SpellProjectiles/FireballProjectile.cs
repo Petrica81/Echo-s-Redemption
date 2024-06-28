@@ -25,14 +25,20 @@ public class FireballProjectile : Attack
         }
         Destroy(transform.parent.gameObject);
     }
+    private void OnEnable()
+    {
+        transform.GetChild(0).gameObject.SetActive(true);
+    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Debug.Log("a intrat");
-        Destroy(transform.parent.gameObject);
+        Destroy(transform.parent.gameObject, 1f);
+        _speed = 0;
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         Debug.Log("a intrat coll");
-        Destroy(transform.parent.gameObject);
+        Destroy(transform.parent.gameObject, 1f);
+        _speed = 0;
     }
 }
