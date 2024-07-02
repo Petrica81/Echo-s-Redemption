@@ -18,13 +18,20 @@ public abstract class BaseEnemyController : MonoBehaviour
     protected EnemyHealth _enemyHealth;
     protected EnemyAttack _enemyAttack;
 
+    [SerializeField]
     protected int _detectionDistance;
+    [SerializeField]
     protected int _followDistance;
+    [SerializeField]
     protected int _attackRange;
+    [SerializeField]
     protected int _patrolRange;
+    [SerializeField]
     protected float _timeMoving;
     protected bool _gameOn;
+    [SerializeField]
     private int _health;
+    [SerializeField]
     private int _damage;
     public int Health { get { return _health; } set { _health = value; } }
     public int Damage { get { return _damage; } set { _damage = value; } }

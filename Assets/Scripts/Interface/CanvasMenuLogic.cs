@@ -1,10 +1,9 @@
-using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
-public class CanvasMenuLogic : MonoBehaviour
+public class CanvasMenuLogic : BaseRecognizer
 {
     [SerializeField]
     [Tooltip("The panel which will pop up on pausing.")]
@@ -20,6 +19,26 @@ public class CanvasMenuLogic : MonoBehaviour
 
     [SerializeField] private GameObject pauseMenuFirst;
     [SerializeField] private GameObject settingsMenuFirst;
+
+    private void Awake()
+    {
+        base.actions.Add("Pause", () => {
+            if (_gameIsPaused) ResumeGame();
+            else PauseGame();
+        });
+        base.actions.Add("Menu", () => {
+            if (_gameIsPaused) ResumeGame();
+            else PauseGame();
+        });
+        base.actions.Add("Escape", () => {
+            if (_gameIsPaused) ResumeGame();
+            else PauseGame();
+        });
+        base.actions.Add("Resume", () => { if (_pausePanel.activeInHierarchy) ResumeGame(); });
+        base.actions.Add("Settings", () => { if (_pausePanel.activeInHierarchy) Settings(); });
+        base.actions.Add("Back", () => { if (_settingsPanel.activeInHierarchy) BackToPause(); });
+        base.actions.Add("Quit", () => { if (_pausePanel.activeInHierarchy) Exit(); });
+    }
     private void Start()
     {
         if (SceneManager.GetActiveScene().name.Contains("MainMenu"))
@@ -74,7 +93,9 @@ public class CanvasMenuLogic : MonoBehaviour
     }
     public void Quit()
     {
+        #if UNITY_EDITOR
         EditorApplication.isPlaying = false;
+        #endif
         Application.Quit();
     }
     public void Exit()
@@ -96,8 +117,9 @@ public class CanvasMenuLogic : MonoBehaviour
     {
         gameObject.SetActive(true);
     }
-    private void OnDestroy()
+    private new void OnDestroy()
     {
+        base.OnDestroy();
         StartMenuButtons._onPlay -= HandleOnPlay;
     }
 }

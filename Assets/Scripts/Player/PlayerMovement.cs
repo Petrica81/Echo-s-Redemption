@@ -1,7 +1,8 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : BaseRecognizer
 {
     private Grid _grid;
     public static event Delegates.PlayAction OnMove;
@@ -11,6 +12,16 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         _grid = Grid.Instance;
+        base.actions.Add("Move up", () => { if (_controller.currentState == PlayerState.idle) StartCoroutine(Move(0, 1)); });
+        base.actions.Add("Move down", () => { if (_controller.currentState == PlayerState.idle) StartCoroutine(Move(0, -1)); });
+        base.actions.Add("Move right", () => { if (_controller.currentState == PlayerState.idle) StartCoroutine(Move(1, 0)); });
+        base.actions.Add("Move left", () => { if (_controller.currentState == PlayerState.idle) StartCoroutine(Move(-1, 0)); });
+        base.actions.Add("Move", () => {
+        Vector2Int direction = _controller.animator.GetDirection();
+        if (_controller.currentState == PlayerState.idle) 
+            StartCoroutine(Move(direction.x, direction.y)); 
+        });
+
     }
     private void Start()
     {

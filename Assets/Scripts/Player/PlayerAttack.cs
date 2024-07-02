@@ -1,13 +1,14 @@
 using System.Collections;
 using UnityEngine;
 
-public class PlayerAttack : MonoBehaviour
+public class PlayerAttack : BaseRecognizer
 {
     private PlayerController _controller;
     private Grid _grid;
     private void Awake()
     {
         _grid = Grid.Instance;
+        base.actions.Add("Attack", () => { if (_controller.currentState == PlayerState.idle) StartCoroutine(Attack()); });
     }
     private void Start()
     {

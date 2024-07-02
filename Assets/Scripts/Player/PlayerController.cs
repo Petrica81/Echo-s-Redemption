@@ -59,13 +59,13 @@ public class PlayerController : MonoBehaviour
             movement.enabled = false;
             attack.enabled = false;
             StartMenuButtons._onPlay += HandleOnPlay;
-            Health = 10;
         }
         else
         {
             TilemapGenerator._onTilemapGenerated += HandleOnTilemapGenerated;
-            Health = 10;
         }
+
+        Health = 100;
     }
     public Vector2Int GetPlayerPosition()
     {

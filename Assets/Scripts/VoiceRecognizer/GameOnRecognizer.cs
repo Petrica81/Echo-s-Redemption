@@ -67,8 +67,14 @@ public class GameOnRecognizer : BaseRecognizer
     public Grimoire _grimoire;
     private void Update()
     {
-        if (Input.GetKeyUp(KeyCode.F))
+        if (Input.GetKeyUp(KeyCode.Alpha1))
+            _grimoire.CastSpell("FireballLow");
+        if (Input.GetKeyUp(KeyCode.Alpha2))
+            _grimoire.CastSpell("WaterCascadeLow");
+        if (Input.GetKeyUp(KeyCode.Alpha3))
             _grimoire.CastSpell("EarthquakeLow");
+        if (Input.GetKeyUp(KeyCode.Alpha4))
+            _grimoire.CastSpell("SpaceballLow");
 
     }
 }

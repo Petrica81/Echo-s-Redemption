@@ -104,6 +104,7 @@ public static class SpellWords
         { "chinook", new List<(string, int)> { ("wind", 10) } },
         { "blast", new List<(string, int)> { ("wind", 10) } },
         { "earth", new List<(string, int)> { ("earth", 10) } },
+        { "earthquake", new List<(string, int)> { ("earth", 10) } },
         { "rock", new List<(string, int)> { ("earth", 10) } },
         { "soil", new List<(string, int)> { ("earth", 10) } },
         { "ground", new List<(string, int)> { ("earth", 10) } },

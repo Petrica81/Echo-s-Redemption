@@ -34745,6 +34745,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3f76478adb4fced4795cbce8651dcb93, type: 3}
+--- !u!114 &996645133 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 215131507271080460, guid: 477f7095be6b7364191133bcd61d7b4b, type: 3}
+  m_PrefabInstance: {fileID: 636243580}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72cacfbb7811e5d4397767e70e38a3bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &997682569
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -45583,6 +45594,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4befc54b9e7465a42aba6d49bb13fc1a, type: 3}
+--- !u!114 &378054674272498016 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7856786868708754488, guid: 4befc54b9e7465a42aba6d49bb13fc1a, type: 3}
+  m_PrefabInstance: {fileID: 378054674272498015}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 212995c1715cbe445a5f037075445fdf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4622309201843647108
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -45591,6 +45613,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 618492404091825937, guid: e0cf69d1ecf1e074dae79ac9c48520c5, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 519420031}
     - target: {fileID: 3334225822262179622, guid: e0cf69d1ecf1e074dae79ac9c48520c5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -45635,9 +45661,25 @@ PrefabInstance:
       propertyPath: _grimoire
       value: 
       objectReference: {fileID: 92680646}
-    - target: {fileID: 3778365884350679245, guid: e0cf69d1ecf1e074dae79ac9c48520c5, type: 3}
-      propertyPath: m_IsActive
+    - target: {fileID: 5756516894692996071, guid: e0cf69d1ecf1e074dae79ac9c48520c5, type: 3}
+      propertyPath: _gameKeywordRecognizers.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5756516894692996071, guid: e0cf69d1ecf1e074dae79ac9c48520c5, type: 3}
+      propertyPath: _gameKeywordRecognizers.Array.data[0]
+      value: 
+      objectReference: {fileID: 378054674272498016}
+    - target: {fileID: 5756516894692996071, guid: e0cf69d1ecf1e074dae79ac9c48520c5, type: 3}
+      propertyPath: _gameKeywordRecognizers.Array.data[1]
+      value: 
+      objectReference: {fileID: 996645133}
+    - target: {fileID: 7007086013725692811, guid: e0cf69d1ecf1e074dae79ac9c48520c5, type: 3}
+      propertyPath: m_BlockingObjects
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7007086013725692811, guid: e0cf69d1ecf1e074dae79ac9c48520c5, type: 3}
+      propertyPath: m_IgnoreReversedGraphics
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7998235228607351918, guid: e0cf69d1ecf1e074dae79ac9c48520c5, type: 3}
       propertyPath: _grimoire

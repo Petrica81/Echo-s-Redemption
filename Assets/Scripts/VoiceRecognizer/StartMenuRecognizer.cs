@@ -9,6 +9,6 @@ public class StartMenuRecognizer : BaseRecognizer
     {
         base.actions.Add("play", startMenuButtons.Play);
         base.actions.Add("settings", startMenuButtons.Settings);
-        base.actions.Add("exit", startMenuButtons.Quit);
+        base.actions.Add("Quit", startMenuButtons.Quit);
     }
 }

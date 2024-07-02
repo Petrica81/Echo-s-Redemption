@@ -1,19 +1,25 @@
 using UnityEngine;
 
-public class PlayerAnimator : MonoBehaviour
+public class PlayerAnimator : BaseRecognizer
 {
+    private PlayerController _controller;
     private Animator _headAnim;
     private Animator _chestAnim;
     private Animator _footAnim;
 
     private void Awake()
     {
+        _controller = GetComponent<PlayerController>();
         _headAnim = transform.GetChild(0).GetComponent<Animator>();
         _chestAnim = transform.GetChild(1).GetComponent<Animator>();
         _footAnim = transform.GetChild(2).GetComponent<Animator>();
         if (_headAnim == null || _chestAnim == null || _footAnim == null)
             Debug.Log("Eroare , nu gasesc componenta de animator pe unul dintre copiii playerului");
         UpdateDirection(0, -1);
+        base.actions.Add("look up",() => { if (_controller.currentState == PlayerState.idle) UpdateDirection(0, 1); });
+        base.actions.Add("look down", () => { if (_controller.currentState == PlayerState.idle) UpdateDirection(0, -1); });
+        base.actions.Add("look right", () => { if (_controller.currentState == PlayerState.idle) UpdateDirection(1, 0); });
+        base.actions.Add("look left", () => { if (_controller.currentState == PlayerState.idle) UpdateDirection(-1, 0); });
 
     }
 

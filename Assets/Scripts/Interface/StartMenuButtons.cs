@@ -1,4 +1,5 @@
 using System.Collections;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 public class StartMenuButtons : BaseButtons
@@ -28,7 +29,7 @@ public class StartMenuButtons : BaseButtons
         ButtonSound();
         yield return new WaitUntil(() => audioSource.isPlaying == false);
         _onPlay?.Invoke();
-        transform.parent.gameObject.SetActive(false);
+        Destroy(transform.parent.gameObject);
     }
 
     public void Settings()
@@ -40,6 +41,9 @@ public class StartMenuButtons : BaseButtons
     public void Quit()
     {
         ButtonSound();
+        #if UNITY_EDITOR
+        EditorApplication.isPlaying = false;
+        #endif
         Application.Quit();
     }
 }

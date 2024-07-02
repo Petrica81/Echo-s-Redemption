@@ -1,19 +1,20 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Android;
 
 public class RecognizerSwitcher : MonoBehaviour
 {
-    private GameOnRecognizer gameOnRecognizer;
-    private SpellRecognizer spellRecognizer;
+    public List<BaseRecognizer> _gameKeywordRecognizers;
+    private SpellRecognizer _spellRecognizer;
 
     private void Start()
     {
         if (!Permission.HasUserAuthorizedPermission(Permission.Microphone))
             Permission.RequestUserPermission(Permission.Microphone);
 
-        spellRecognizer = GetComponent<SpellRecognizer>();
-        gameOnRecognizer = GetComponent<GameOnRecognizer>();
+        _spellRecognizer = GetComponent<SpellRecognizer>();
+        _gameKeywordRecognizers.Add(GetComponent<GameOnRecognizer>());
 
         GameOnRecognizer._onSpellCast += HandleOnSpellCast;
         SpellRecognizer._onFinishSpellCast += HandleOnFinishSpellCast;
@@ -21,16 +22,22 @@ public class RecognizerSwitcher : MonoBehaviour
 
     IEnumerator SwitchSpellToGame()
     {
-        spellRecognizer.enabled = false;
+        _spellRecognizer.enabled = false;
         yield return new WaitForSeconds(0.1f);
-        gameOnRecognizer.enabled = true;
+        foreach(BaseRecognizer recognizer in _gameKeywordRecognizers)
+        {
+            recognizer.enabled = true;
+        }
     }
 
     IEnumerator SwitchGameToSpell()
     {
-        gameOnRecognizer.enabled = false;
+        foreach (BaseRecognizer recognizer in _gameKeywordRecognizers)
+        {
+            recognizer.enabled = false;
+        }
         yield return new WaitForSeconds(0.1f);
-        spellRecognizer.enabled = true;
+        _spellRecognizer.enabled = true;
     }
     private void HandleOnSpellCast()
     {

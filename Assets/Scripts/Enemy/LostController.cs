@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections;
-using TMPro.EditorUtilities;
 
 public class LostController : BaseEnemyController
 {
@@ -35,8 +34,10 @@ public class LostController : BaseEnemyController
             StartCoroutine(_enemyAttack.Attack(base._player, target, Damage));
             yield break;
         }
-
+        _grid.UpdateGrid(new Vector3(_x, _y, -1), 0);
         _grid.UpdateGrid(new Vector3(_x + target.x, _y + target.y, -1), 2);
+        base._x += target.x;
+        base._y += target.y;
 
         Vector2 originPos;
 
@@ -51,11 +52,9 @@ public class LostController : BaseEnemyController
             yield return new WaitForSeconds(_timeMoving / 100f);
         }
 
-        _grid.UpdateGrid(new Vector3(_x, _y, -1), 0);
+        _grid.UpdateGrid(new Vector3(_x - target.x, _y - target.y, -1), 0);
         yield return null;
         transform.position = originPos + target;
-        base._x += target.x;
-        base._y += target.y;
         base._enemyState = EnemyState.idle;
     }
 
@@ -67,6 +66,7 @@ public class LostController : BaseEnemyController
 
     private void OnDestroy()
     {
+        _grid.UpdateGrid(new Vector3(_x, _y, -1), 0);
         TilemapGenerator._onTilemapGenerated -= HandleOnTilemapGenerated;
     }
 }
